@@ -67,12 +67,48 @@ pnorm(-1.96)≈0.025
 
 #### We calculate theoritical quantiles assuming the data follows normal distribution
 
-################
+################ Standard Deviation #####################
+sd(X)
+###########To see the arguments############
+args(func)
+################ mad(x)- Mean Absolute Deviation ################
+mad(x)
+################# if mean=median and sd= mad ### Property of Normal Distribution
 
 
+############# Defining Function in R ########################
+f_name=function(input variables){
+    
+}
+
+############### Components of a plot ######## 
+#1) Data
+#2) type of plot- scatter,line , boxplot
+#3) Mapping
+#4) Scale
+#5) Labels, Title, Legend etc
+
+First Step for a ggplot graph is defining a ggplot object
+> ggplot(data)
+> # is equivalent to data %>% ggplot()
+
+# This ggplot object can be assigned to an object let's say it p
+########### to get it's class we can write 
+class(p) 
+
+######## add layer by layer #####
+# Add layers by adding +
+# Usually first added layer defines geometry
+
+#For Scatter plot
+geom_point(x,y,alpha,colour)
 
 
+# aes connects data with what we see on the graph---aesthatic mappings----outcome of aes is often used as input of geometry function---recognizes variables from the 
+# aes recognizes variable names from the data  
 
+# Add label and text
+geom_label(,size=) and geom_text(aes(population/10^6, total, label = abb),nudge_x=1)
 
 
 
