@@ -134,3 +134,38 @@ geom_density(fill="")
 geom_qq
 
 #grid.arrange(p1,p2,p3,ncol=3)
+#group by a variable
+#use group in aes mappin
+#use fill in aes for different fills and alpha in density to increase transparency
+
+# Using dplyr
+s=heights%>%filter(sex=="Male")%>%summarize(average=mean(height),sddev=sd(height))
+
+# dot place holder
+
+# Summarizr into groups
+
+heights %>% group_by(sex)
+murders%>% arrange(population)%>%head()
+
+#for descending order use desc(population)
+#nested sorting
+#top_n(10,murder) function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
