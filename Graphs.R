@@ -12,8 +12,9 @@ library(tidyverse)
 # stringr for making working with strings easy
 # forcats for solving common problems wit factors
 
-2)
-
+2)ggthemes
+3)ggrepel #for non overlapping
+4)gridExtra
 
 
 
@@ -101,8 +102,8 @@ class(p)
 # Usually first added layer defines geometry
 
 #For Scatter plot
-geom_point(x,y,alpha,colour)
-
+geom_point(x,y,alpha,colour,size)
+geom_point(aes(col=region),size=3)
 
 # aes connects data with what we see on the graph---aesthatic mappings----outcome of aes is often used as input of geometry function---recognizes variables from the 
 # aes recognizes variable names from the data  
@@ -110,8 +111,26 @@ geom_point(x,y,alpha,colour)
 # Add label and text
 geom_label(,size=) and geom_text(aes(population/10^6, total, label = abb),nudge_x=1)
 
+# Scale
+Scale_x_continuous(trans="log10")
 
+# X and Y label
+xlab("x_label")
+ylab("y_label")
 
+# Title
+ggtitle("")
 
+#Line
+geom_abline
 
+# HIstogram
+geom_histogram(binwidth=1)
 
+#Density
+geom_density(fill="")
+
+#qqplot
+geom_qq
+
+#grid.arrange(p1,p2,p3,ncol=3)
