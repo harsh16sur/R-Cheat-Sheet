@@ -148,13 +148,43 @@ s=heights%>%filter(sex=="Male")%>%summarize(average=mean(height),sddev=sd(height
 heights %>% group_by(sex)
 murders%>% arrange(population)%>%head()
 
-#for descending order use desc(population)
-#nested sorting
-#top_n(10,murder) function
+########################################for descending order use desc(population)#######################################
+######################################## nested sorting #######################################
+######################################## top_n(10,murder) function #######################################
+######################################## Create or transform variables #######################################
+####################################### add a new column############################
+
+####################################################################################co
+############################ dplyr library #########################################
+####################################################################################
+mtcars %>% as_tibble() %>% mutate(
+  cyl2 = cyl * 2,
+  cyl4 = cyl2 * 2
+)
+######################################## modify a column#######################################
+mtcars %>% as_tibble() %>% mutate(
+  mpg = NULL,
+  disp = disp * 0.0163871 # convert to litres
+)
+######################################## window functions are useful for grouped mutates#######################################
+mtcars %>%
+ group_by(cyl) %>%
+ mutate(rank = min_rank(desc(mpg)))
+
+######################################### You can drop variables by setting them to NULL#######################################
+mtcars %>% mutate(cyl = NULL)
+################################# transmute keeps only the variables you create################################
+mtcars %>%
+  transmute(displ_l = disp / 61.0237)
+################################# Add label to the graph instead of legends #############################
+geom_text(data=labels,aes(x,y,labels=country),size=5) + theme(legend.position="none")
 
 
+###################### Rotate ticks################################
+ theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-
+########## to reorder ######## fac has factor levels anf value has value associated with each entry
+fac=reorder(fac,value,FUN=mean)
 
 
 
