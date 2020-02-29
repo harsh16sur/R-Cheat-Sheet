@@ -187,11 +187,115 @@ geom_text(data=labels,aes(x,y,labels=country),size=5) + theme(legend.position="n
 fac=reorder(fac,value,FUN=mean)
 
 
+#Faceting
+facet_grid(continent ~ year)
+facet_wrap(~year) #For wrapping the graphs into space
+
+############################# Example #######################
+years <- c(1962, 1980, 1990, 2000, 2012)
+continents <- c("Europe", "Asia")
+gapminder %>%
+    filter(year %in% years & continent %in% continents) %>%
+    ggplot(aes(fertility, life_expectancy, col = continent)) +
+    geom_point() +
+    facet_wrap(~year)
+
+##############################################################Time Series plots
+# line plot fertility time series for two countries - one line per country
+gapminder %>% filter(country %in% countries) %>%
+    ggplot(aes(year, fertility, group = country)) +
+    geom_line()
+
+# fertility time series for two countries - lines colored by country
+gapminder %>% filter(country %in% countries) %>%
+    ggplot(aes(year, fertility, col = country)) +
+    geom_line()
+# Adding text labels to the plot - lines colored by country and labeled, no legend 
+labels <- data.frame(country = countries, x = c(1975, 1965), y = c(60, 72))
+gapminder %>% filter(country %in% countries) %>%
+    ggplot(aes(year, life_expectancy, col = country)) +
+    geom_line() +
+    geom_text(data = labels, aes(x, y, label = country), size = 5) +
+    theme(legend.position = "none")
 
 
+#Transforming to log scale--- scale_x_continuous("log2")
 
+##################Reorder
+# by default, factor order is alphabetical
+fac <- factor(c("Asia", "Asia", "West", "West", "West"))
+levels(fac)
 
+# reorder factor by the category means
+value <- c(10, 11, 12, 6, 4)
+fac <- reorder(fac, value, FUN = mean)
+levels(fac)
+#################################I don't know what is this
 
+# add dollars per day variable and define past year
+gapminder <- gapminder %>%
+    mutate(dollars_per_day = gdp/population/365)
+past_year <- 1970
+
+# define Western countries
+west <- c("Western Europe", "Northern Europe", "Southern Europe", "Northern America", "Australia and New Zealand")
+
+# facet by West vs devloping
+gapminder %>%
+    filter(year == past_year & !is.na(gdp)) %>%
+    mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+    ggplot(aes(dollars_per_day)) +
+    geom_histogram(binwidth = 1, color = "black") +
+    scale_x_continuous(trans = "log2") +
+    facet_grid(. ~ group)
+
+# facet by West/developing and year
+present_year <- 2010
+gapminder %>%
+    filter(year %in% c(past_year, present_year) & !is.na(gdp)) %>%
+    mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+    ggplot(aes(dollars_per_day)) +
+    geom_histogram(binwidth = 1, color = "black") +
+    scale_x_continuous(trans = "log2") +
+    facet_grid(year ~ group)
+
+##############################################
+
+# define countries that have data available in both years
+country_list_1 <- gapminder %>%
+    filter(year == past_year & !is.na(dollars_per_day)) %>% .$country
+    country_list_2 <- gapminder %>%
+    filter(year == present_year & !is.na(dollars_per_day)) %>% .$country
+    country_list <- intersect(country_list_1, country_list_2)
+
+# make histogram including only countries with data available in both years
+gapminder %>%
+    filter(year %in% c(past_year, present_year) & country %in% country_list) %>%    # keep only selected countries
+    mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+    ggplot(aes(dollars_per_day)) +
+    geom_histogram(binwidth = 1, color = "black") +
+    scale_x_continuous(trans = "log2") +
+    facet_grid(year ~ group)
+
+#####################################################
+
+p <- gapminder %>%
+    filter(year %in% c(past_year, present_year) & country %in% country_list) %>%
+    mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%
+    ggplot() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    xlab("") + scale_y_continuous(trans = "log2")
+    
+ p + geom_boxplot(aes(region, dollars_per_day, fill = continent)) +
+     facet_grid(year ~ .)
+ 
+ # arrange matching boxplots next to each other, colored by year
+ p + geom_boxplot(aes(region, dollars_per_day, fill = factor(year)))
+
+##################################################################################
+
+limit for scale of xand y
+breaks for tick marks on x and y axis
 
 
 
